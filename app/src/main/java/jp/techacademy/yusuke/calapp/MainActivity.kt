@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.support.v7.app.AlertDialog
+import android.util.Log
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -19,12 +21,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+
         if(v!=null) {
-            when (v.id) {
-                R.id.sum -> calcSum()
-                R.id.dif -> calcdif()
-                R.id.pro -> calcpro()
-                R.id.quo -> calcquo()
+            if (textView1.text.toString() == "" || textView2.text.toString() == "") {
+                showAlertDialog()
+            } else {
+                when (v.id) {
+                    R.id.sum -> calcSum()
+                    R.id.dif -> calcdif()
+                    R.id.pro -> calcpro()
+                    R.id.quo -> calcquo()
+                }
             }
         }
     }
@@ -67,6 +74,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val num2 = value2.toDouble()
         intent.putExtra("value", num1 / num2)
         startActivity(intent)
+    }
+
+    private fun showAlertDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("エラー")
+        alertDialogBuilder.setMessage("数値が入力されていません")
+
+        alertDialogBuilder.setPositiveButton("OK"){dialog, which ->
+            Log.d("UI_PARTS", "肯定ボタン")
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }
 
